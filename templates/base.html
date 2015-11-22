@@ -1,0 +1,11 @@
+<!doctype html>
+<title>Flask Intro</title>
+<link href='static/bootstrap.css' rel='stylesheet'>
+
+<div class='container'>
+  {% block body %}
+  {% endblock %}
+  {% for message in get_flashed_messages() %}
+    {{ message }}
+  {% endfor %}
+</div>
