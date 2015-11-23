@@ -51,4 +51,5 @@ def logout():
 
 if __name__ == '__main__':
     print('APP_SETTINGS set to', os.environ['APP_SETTINGS'])
+    print('DATABASE_URI set to', os.environ['DATABASE_URL'])
     app.run()
