@@ -1,4 +1,4 @@
-from app import db
+from app import db, bcrypt
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
@@ -27,3 +27,9 @@ class Users(db.Model):
     email = db.Column(db.String, nullable=False)
     pw    = db.Column(db.String, nullable=False)
     posts = relationship("BlogPost", backref="author")
+
+    def __init__(self, name, email, pw):
+        self.name = name
+        self.email = email
+        self.pw = bcrypt.generate_password_hash(pw)
+
