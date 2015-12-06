@@ -12,6 +12,9 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)
 
 from models import *
+from project.users.views import users_blueprint
+
+app.register_blueprint(users_blueprint)
 
 def login_required(f):
     @wraps(f)
@@ -20,7 +23,7 @@ def login_required(f):
             return f(*args, **kwargs)
         else:
             flash('You need to login first.')
-            return redirect(url_for('login'))
+            return redirect(url_for('users.login'))
     return wrap
 
 @app.route('/')
@@ -32,24 +35,6 @@ def home():
 @app.route('/welcome')
 def welcome():
     return render_template("welcome.html")
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            flash('Invalid credentials.')
-        else:
-            session['logged_in'] = True
-            flash('You were just logged in!')
-            return redirect(url_for('home'))
-    return render_template("login.html")
-
-@app.route('/logout')
-@login_required
-def logout():
-    session.pop('logged_in', None)
-    flash('You were just logged out!')
-    return redirect(url_for('welcome'))
 
 if __name__ == '__main__':
     print('APP_SETTINGS set to', os.environ['APP_SETTINGS'])
